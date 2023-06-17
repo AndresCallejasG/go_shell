@@ -12,20 +12,27 @@ import (
 
 func main() {
 
-	buf := bufio.NewReader(os.Stdin)
-	cmdInput, err := buf.ReadString('\n')
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
+	for {
 
-	cmdInput = strings.TrimSuffix(cmdInput, "\n")
+		buf := bufio.NewReader(os.Stdin)
+		cmdInput, err := buf.ReadString('\n')
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
 
-	commandExec := exec.Command(cmdInput)
-	commandExec.Stderr = os.Stderr
-	commandExec.Stdout = os.Stdout
-	err = commandExec.Run()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		cmdInput = strings.TrimSuffix(cmdInput, "\n")
+
+		if cmdInput == "exit" {
+			break
+		}
+
+		commandExec := exec.Command(cmdInput)
+		commandExec.Stderr = os.Stderr
+		commandExec.Stdout = os.Stdout
+		err = commandExec.Run()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
 	}
 
 }
