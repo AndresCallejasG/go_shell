@@ -23,18 +23,29 @@ func main() {
 
 		cmdInput = strings.TrimSuffix(cmdInput, "\n")
 
-		if cmdInput == "exit" {
+		exitFlag := execCommands(cmdInput)
+		if exitFlag {
 			break
 		}
 
-		arrayCmd := strings.Fields(cmdInput)
-		commandExec := exec.Command(arrayCmd[0], arrayCmd[1:]...)
-		commandExec.Stderr = os.Stderr
-		commandExec.Stdout = os.Stdout
-		err = commandExec.Run()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-		}
 	}
 
+}
+
+func execCommands(cmdInput string) (ExitFlag bool) {
+
+	if cmdInput == "exit" {
+		return true
+	}
+
+	arrayCmd := strings.Fields(cmdInput)
+	commandExec := exec.Command(arrayCmd[0], arrayCmd[1:]...)
+	commandExec.Stderr = os.Stderr
+	commandExec.Stdout = os.Stdout
+	err := commandExec.Run()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+
+	return false
 }
