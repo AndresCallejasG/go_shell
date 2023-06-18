@@ -14,6 +14,7 @@ func main() {
 
 	for {
 
+		fmt.Print("$ ")
 		buf := bufio.NewReader(os.Stdin)
 		cmdInput, err := buf.ReadString('\n')
 		if err != nil {
@@ -26,7 +27,8 @@ func main() {
 			break
 		}
 
-		commandExec := exec.Command(cmdInput)
+		arrayCmd := strings.Fields(cmdInput)
+		commandExec := exec.Command(arrayCmd[0], arrayCmd[1:]...)
 		commandExec.Stderr = os.Stderr
 		commandExec.Stdout = os.Stdout
 		err = commandExec.Run()
